@@ -1,1 +1,3 @@
-# paper_isocrpsdeco
+# Example: Precipitation 
+
+Details
