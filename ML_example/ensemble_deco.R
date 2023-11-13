@@ -6,7 +6,9 @@
 library(extraDistr)
 library(scoringRules)
 
-source('functions_deco.R')
+
+set_dir = dirname(rstudioapi::getSourceEditorContext()$path)
+source(paste(set_dir, '/functions_deco.R', sep = ''))
 ######################################################################
 
 method = 'easyuq' 
@@ -16,7 +18,7 @@ num_hidden_layers <- 1
 data_dirs <- c('bostonHousing', 'energy', 'yacht', 'concrete') # ,'kin8nm'
 
 for (data_directory in data_dirs){ # , 'power-plant'
-  deco_path <- paste('./deco_data/', method, '/UCI_datasets/',  data_directory , '/deco/', sep = '')
+  deco_path <- paste(set_dir, '/deco_data/', method, '/UCI_datasets/',  data_directory , '/deco/', sep = '')
   
   dim_split <- 20
   if (data_directory == 'protein-tertiary-structure'){
@@ -54,7 +56,7 @@ for (data_directory in data_dirs){ # , 'power-plant'
   
   nMSC <- 1 - (1 / UNC)*MSC
   nDSC <- (1 / UNC)*DSC
-  deco_results_path <- paste('./deco_data/', method, '/UCI_datasets/',  data_directory , '/deco_results/', sep = '')
+  deco_results_path <- paste(set_dir, '/deco_data/', method, '/UCI_datasets/',  data_directory , '/deco_results/', sep = '')
   
   if (file.exists(deco_results_path) == FALSE) {
     dir.create(deco_results_path, showWarnings = TRUE, recursive = FALSE, mode = "0777")
@@ -86,7 +88,7 @@ y_file <- 'y_test_10_xepochs_1_hidden_layers_'
 
 data_dirs <- c('bostonHousing', 'concrete', 'energy', 'yacht')
 for (data_directory in data_dirs){ 
-  deco_path <- paste('./deco_data/', method, '/UCI_datasets/',  data_directory , '/deco/', sep = '')
+  deco_path <- paste(set_dir, '/deco_data/', method, '/UCI_datasets/',  data_directory , '/deco/', sep = '')
   
   dim_split <- 20
   # overall splits
@@ -127,7 +129,7 @@ for (data_directory in data_dirs){
   # save values to folder
   nMSC <- 1 - (1 / UNC)*MSC
   nDSC <- (1 / UNC)*DSC
-  deco_results_path <- paste('./deco_data/', method, '/UCI_datasets/',  data_directory , '/deco_results/', sep = '')
+  deco_results_path <- paste(set_dir, '/deco_data/', method, '/UCI_datasets/',  data_directory , '/deco_results/', sep = '')
   
   if (file.exists(deco_results_path) == FALSE) {
     dir.create(deco_results_path, showWarnings = TRUE, recursive = FALSE, mode = "0777")

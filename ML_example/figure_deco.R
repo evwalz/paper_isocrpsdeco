@@ -2,7 +2,9 @@
 library(ggplot2)
 library(ggrepel)
 library(geomtextpath)
-data_directory = 'bostonHousing' # concrete, energy, yacht
+
+set_dir = dirname(rstudioapi::getSourceEditorContext()$path)
+data_directory = 'yacht' # bostonHousing, concrete, energy, yacht
 
 gg_color_hue <- function(n) {
   hues = seq(15, 375, length = n + 1)
@@ -49,11 +51,11 @@ methods_unc <-rep(0, length(methods))
 k <- 1
 for (method in methods) {
   if (method == 'cp_smooth') {
-    deco_path <- paste('./deco_data/cp/UCI_datasets/',  data_directory , '/deco_results_smooth/', sep = '')
+    deco_path <- paste(set_dir, '/deco_data/cp/UCI_datasets/',  data_directory , '/deco_results_smooth/', sep = '')
   } else if (method == 'easyuq_smooth') {
-    deco_path <- paste('./deco_data/easyuq/UCI_datasets/',  data_directory , '/deco_results_smooth/', sep = '')
+    deco_path <- paste(set_dir, '/deco_data/easyuq/UCI_datasets/',  data_directory , '/deco_results_smooth/', sep = '')
   }  else {
-    deco_path <- paste('./deco_data/', method, '/UCI_datasets/',  data_directory , '/deco_results/', sep = '')
+    deco_path <- paste(set_dir, '/deco_data/', method, '/UCI_datasets/',  data_directory , '/deco_results/', sep = '')
   }
   methods_msc[k] <- mean(read.table(paste(deco_path, "msc.txt", sep=""))$V1)
   methods_dsc[k]  <- mean(read.table(paste(deco_path, "dsc.txt", sep=""))$V1)
@@ -73,7 +75,7 @@ if (data_directory == 'concrete'){
 } else if (data_directory == 'bostonHousing'){
   crps_isolines <- c(1.0, 1.1,1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3)
 } else if (data_directory == 'energy'){
-  crps_isolines <- seq(0.19, 0.43, 0.03
+  crps_isolines <- seq(0.19, 0.43, 0.03)
 }else if (data_directory == 'yacht'){
   crps_isolines <- seq(0.35, 0.59, 0.03)
 } 
@@ -123,4 +125,4 @@ p <- ggplot(df_scores) +
 
 p + geom_label(data = NULL, x = -Inf, y = Inf, vjust = 1,hjust = 0,label =paste("UNC =" , unc_val)) + ggtitle(data_title)
 
-ggsave(paste("./figures/",data_directory,"_deco.pdf", sep=""), width = 120, height = 120, unit = "mm", device = "pdf")
+ggsave(paste(set_dir, "/figures/",data_directory,"_deco.pdf", sep=""), width = 120, height = 120, unit = "mm", device = "pdf")
