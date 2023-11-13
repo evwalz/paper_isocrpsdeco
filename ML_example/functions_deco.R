@@ -1,3 +1,7 @@
+# Functions:
+
+library(scoringRules)
+
 crps_ecdf_list <- function(y, p,x) {
   w <- lapply(p, function(x) c(x[1], diff(x)))
   
@@ -21,7 +25,6 @@ crps_unc <- function(obs){
 }
 
 
-library(scoringRules)
 gaussian_crps <- function(y, mu, sigma){
   return(mean(scoringRules::crps_norm(y, mean = mu, sd = sigma)))
 }
@@ -51,7 +54,6 @@ bounds_norm_minmax <- function(y, mu, sigma, epsilon, delta){
     }
     return(c(a, b))
   }
-  #print(mean(tmp))
 }
 
 
@@ -59,18 +61,10 @@ func_crps_normAB <- function(y, mu, sigma, a, b){
   n = length(y)
   tmp  = rep(NA,n)
   for ( i in 1:n){
-    #if (i == 2){
-    #  tmp[i]=NaN
-    #} else {
     integrand1 = function(x) {return((pnorm(x,mean=mu[i],sd=sigma[i]))^2)}
     integrand2 = function(x) {return((pnorm(x,mean=mu[i],sd=sigma[i]) - 1)^2)}
     tmp[i]=integrate(integrand1,lower=a,upper=y[i])$value + integrate(integrand2,lower=y[i],upper=b)$value
-    #}
-    #integrand1 = function(x) {return((pnorm(x,mean=mu[i],sd=sigma[i]) - 1*(y[i]<=x))^2)}
-    
   }
-  #print(tmp)
-  #return(tmp)
   return(mean(tmp))
 }
 
