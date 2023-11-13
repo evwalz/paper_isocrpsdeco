@@ -6,7 +6,7 @@
 library(extraDistr)
 library(scoringRules)
 
-
+source('functions_deco.R')
 ######################################################################
 
 method = 'easyuq' 
