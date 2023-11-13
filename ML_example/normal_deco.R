@@ -79,7 +79,7 @@ for (method in methods){
       crps_gauss <- gaussian_crps(y_test, mean, sigma)
       
       if (method == 'single_gaussian'){
-        cali_idr <-  idrsd(y_test, X = paras, eps ='sd', type = 'normal')
+        cali_idr <-  idrsd(y_test, X = paras, type = 'normal')
         cali_preds <- predict(cali_idr)
         cali_crps <- mean(crps(cali_preds, y_test))
         
