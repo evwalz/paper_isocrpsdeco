@@ -1,4 +1,4 @@
-# Code for CRPS decomposition paper (ref)
+# Code for paper (ref)
 
 Code to replicate two Case studies in CRPS decomposition paper: 
 
