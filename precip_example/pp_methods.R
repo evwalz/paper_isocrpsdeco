@@ -11,17 +11,19 @@ library(scoringRules)
 library(ensembleMOS)
 library(crch)
 library(ensembleBMA)
+library(isodistrreg)
 #install_github("evwalz/isodisregSD")
 library(isodisregSD)
 #-------------------------------------------------------------------------------
-# load functions to compute upper bound of the interval [0,b]
-source("functions_ab.R")
+# Set City: bru, lhr, zhr, fra
 
-city <- 'bru' # bru, lhr, zhr, fra
+city <- 'bru'
 
-set_dir = dirname(rstudioapi::getSourceEditorContext()$path)
-load(paste0(set_dir, "/data/precipData_caseStudy.rda"))
+# load data and functions to compute upper bound of the interval [0,b]
+set_dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+load(paste0(set_dir, "/precip_data/precipData_caseStudy.rda"))
 data <- precipData_caseStudy
+source(paste0(set_dir, "/functions_ab.R"))
 
 for (lag in 1:5){
   #-------------------------------------------------------------------------------
@@ -34,7 +36,6 @@ for (lag in 1:5){
 
   #-------------------------------------------------------------------------------
   # Postprocessing 1: HCLR
-
 
   grd <- seq(0, 150, 0.1)  # grid only used to make one CRPS computation!
   y <- data_sub$obs
@@ -85,14 +86,11 @@ for (lag in 1:5){
 
 
   # pred_HCLR on the grid [0,b]
-  HCLR_cal_fit <-
-    idrsd(y=obs_test, X = pred_HCLR, grid = grd, type = 'ecdf')
+  HCLR_cal_fit <- idrsd(y=obs_test, X = pred_HCLR, grid = grd, type = 'ecdf')
 
 
   #-------------------------------------------------------------------------------
   # Postprocessing 2: EMOS
-
-
 
   precipData_train = data_sub[1:(n-1),,drop=FALSE]
   precipData_test = data_sub[n:dim(data_sub)[1],,drop=FALSE]
@@ -140,14 +138,11 @@ for (lag in 1:5){
 
   pred_EMOS = ensembleMOS::cdf(fit=fit,ensembleData = Data_test,values=grid_emos)
 
-  EMOS_cal_fit <-
-    idrsd(y=obs_test, X = pred_EMOS, grid = grid_emos, type = 'ecdf')
+  EMOS_cal_fit <- idrsd(y=obs_test, X = pred_EMOS, grid = grid_emos, type = 'ecdf')
 
 
   #-------------------------------------------------------------------------------
   # Postprocessing 3: BMA
-
-
 
   Data_train <- ensembleData(
     forecasts = cbind(
@@ -189,9 +184,7 @@ for (lag in 1:5){
 
   grid_bma= seq(0,b,length.out=5000)
   pred_BMA = ensembleBMA::cdf(fit=fit,ensembleData = Data_test,values=grid_bma)
-  BMA_cal_fit <-
-    idrsd(y=obs_test, X = pred_BMA, grid = grid_bma, type = 'ecdf')
-
+  BMA_cal_fit <- idrsd(y=obs_test, X = pred_BMA, grid = grid_bma, type = 'ecdf')
 
 
   #-------------------------------------------------------------------------------
@@ -209,8 +202,7 @@ for (lag in 1:5){
   pred_IDR_cw <- isodistrreg:::predict.idrfit(fit, data = data_test)
   crps_IDR_cw = mean(isodistrreg:::crps(pred_IDR_cw, y = obs_test))
 
-  IDR_cw_cal_fit <-
-    idrsd(obs_test, X = pred_IDR_cw, type = 'idr')
+  IDR_cw_cal_fit <-idrsd(obs_test, X = pred_IDR_cw, type = 'idr')
 
 
   #-------------------------------------------------------------------------------
@@ -223,13 +215,12 @@ for (lag in 1:5){
   data_train= X[1:(n-1),]
   data_test=X[n:dim(X)[1],]
 
-  fit= isodistrreg::idr(obs_train,data_train,orders=orders,groups=groups)
+  fit = isodistrreg::idr(obs_train,data_train,orders=orders,groups=groups)
 
   pred_IDR_st <- isodistrreg:::predict.idrfit(fit, data = data_test,orders=orders,groups=groups)
   crps_IDR_st = mean(isodistrreg:::crps(pred_IDR_st, y = obs_test))
 
-  IDR_st_cal_fit <-
-    idrsd(obs_test, X = pred_IDR_st, type = 'idr')
+  IDR_st_cal_fit <- idrsd(obs_test, X = pred_IDR_st, type = 'idr')
 
   #-------------------------------------------------------------------------------
   # CPRS of the post-processed forecasts
@@ -247,9 +238,7 @@ for (lag in 1:5){
 
   # CPRS of the reference forecast
 
-  crps_ref =
-    rep(mean(crps_sample(obs_test,matrix(rep(obs_test,length(obs_test)),byrow=TRUE
-                                         ,nrow =length(obs_test)))),5)
+  crps_ref = rep(mean(crps_sample(obs_test,matrix(rep(obs_test,length(obs_test)),byrow=TRUE,nrow =length(obs_test)))),5)
 
   #-------------------------------------------------------------------------------
   # Score Decomposition

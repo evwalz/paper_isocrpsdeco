@@ -10,10 +10,12 @@ library(devtools)
 #install_github("evwalz/isodisregSD")
 library(isodisregSD)
 
-city <- 'bru' # bru, lhr, zhr, fra
+#-------------------------------------------------------------------------------
+# Set City: bru, lhr, zhr, fra
+city <- 'bru'
 
 set_dir = dirname(rstudioapi::getSourceEditorContext()$path)
-load(paste0(set_dir, "/data/precipData_caseStudy.rda"))
+load(paste0(set_dir, "/precip_data/precipData_caseStudy.rda"))
 data <- precipData_caseStudy
 
 for (lag in 1:5){
