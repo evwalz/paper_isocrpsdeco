@@ -11,7 +11,7 @@ library(devtools)
 library(isodisregSD)
 
 #-------------------------------------------------------------------------------
-# Set City: bru, lhr, zhr, fra
+# Set City: bru, lhr, zrh, fra
 city <- 'bru'
 
 set_dir = dirname(rstudioapi::getSourceEditorContext()$path)
@@ -61,5 +61,5 @@ for (lag in 1:5){
   export=list("decomposition"=decomposition,"crps_values"=crps_values,
               "data"=results)
 
-  save(export,file=paste0(set_dir, "/deco_data/ens_",city,"_lag=", lag,".rda"))
+  save(export,file=paste0(set_dir, "/deco_data/ens/ens_",city,"_lag=", lag,".rda"))
 }
