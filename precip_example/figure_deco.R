@@ -4,10 +4,10 @@ library(ggrepel)
 library(geomtextpath)
 
 set_dir = dirname(rstudioapi::getSourceEditorContext()$path)
-load(paste(set_dir , "/deco_data/Data.rda", sep = ''))
+load(paste(set_dir , "/deco_data/results.rda", sep = ''))
 
-unique(Data$airport) # "LHR" "ZRH" "BRU" "FRA"
-city <- "FRA"
+unique(Data$airport) # "lhr" "zrh" "bru" "fra"
+city <- "fra"
 
 
 sel_data <- function(x, city){
@@ -20,13 +20,13 @@ sel_data <- function(x, city){
 
 model_names <- c("HCLR" ,  "EMOS"  , "BMA"  ,  "IDR_cw" ,"IDR_st" ,"ENS")
 
-if (city == "FRA"){
+if (city == "fra"){
   city_name = 'Frankfurt'
-} else if (city == "BRU"){
+} else if (city == "bru"){
   city_name = 'Brussels'
-}else if (city == "LHR"){
+}else if (city == "lhr"){
   city_name = 'London'
-}else if (city == "ZRH"){
+}else if (city == "zrh"){
   city_name = 'Zurich'
 }
 
@@ -44,16 +44,16 @@ unc_str <- round(deco1[[1]][1], 2)
 df_scores$Lag <- as.character(sort(rep(c(1, 2, 3, 4, 5), 6)))
 df_scores$Row <- as.character(c(1:30))
 
-if (city == "BRU") {
+if (city == "bru") {
   crps_isolines <- c(0.86, 0.96, 1.06, 1.16, 1.26, 1.36, 1.46, 1.56, 1.66)
   hjust <- 0.55
-} else if (city == "FRA") {
+} else if (city == "fra") {
   crps_isolines <- c(0.59, 0.65, 0.71, 0.77, 0.83, 0.89, 0.95, 1.01, 1.07)
   hjust <- 0.45
-} else if (city == "LHR") {
+} else if (city == "lhr") {
   crps_isolines <- c(0.57,0.65,0.73,  0.81, 0.89, 0.97, 1.05, 1.13, 1.20)
   hjust <- 0.4
-} else if (city == "ZRH") {
+} else if (city == "zrh") {
   crps_isolines <- c(0.91 , 1.02, 1.13, 1.24, 1.35, 1.46, 1.57, 1.68, 1.79)
   hjust <- 0.41
 }
@@ -77,7 +77,7 @@ p <- ggplot(df_scores) +
     hjust = hjust, size = 7 * 0.36, text_only = TRUE, boxcolour = NA, straight = TRUE
   ) + geom_abline(
     data = iso, aes(intercept = intercept, slope = slope), color = "lightgray", alpha = 0.5,
-    size = 0.5 ) +geom_point(aes(x = msc, y = dsc, color = Lag), size = 1.5)+ 
+    size = 0.5 ) +geom_point(aes(x = msc, y = dsc, color = Lag), size = 1.5)+
   geom_text_repel(aes(x = msc, y = dsc, label = models, color = Lag),show.legend=FALSE,
                   max.overlaps = NA, size = 8 * 0.36, nudge_x = 0,seed = 4) +
   xlab("MCB") +
@@ -95,7 +95,7 @@ p <- ggplot(df_scores) +
     plot.margin=grid::unit(c(1,0,1,0), "mm")
   )
 
-p <-  p +  geom_label(data = NULL,x = -Inf, y = Inf, vjust = 1,hjust = 0, label =paste("UNC =" , unc_str)) + 
+p <-  p +  geom_label(data = NULL,x = -Inf, y = Inf, vjust = 1,hjust = 0, label =paste("UNC =" , unc_str)) +
   ggtitle(city_name) + scale_fill_discrete(name = "Prediction horizon")
 
 p

@@ -15,9 +15,9 @@ library(isodistrreg)
 #install_github("evwalz/isodisregSD")
 library(isodisregSD)
 #-------------------------------------------------------------------------------
-# Set City: bru, lhr, zhr, fra
+# Set City: bru, lhr, zrh, fra
 
-city <- 'bru'
+city <- 'fra'
 
 # load data and functions to compute upper bound of the interval [0,b]
 set_dir <- dirname(rstudioapi::getSourceEditorContext()$path)
@@ -268,5 +268,5 @@ for (lag in 1:5){
 
   export=list("decomposition"=decomposition,"crps_values"=crps_values,
               "data"=results)
-  save(export,file=paste0(set_dir, "/deco_data/pp_",city,"_lag=", lag,".rda"))
+  save(export,file=paste0(set_dir, "/deco_data/pp/pp_",city,"_lag=", lag,".rda"))
 }
