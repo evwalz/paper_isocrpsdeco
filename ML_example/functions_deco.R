@@ -220,7 +220,6 @@ bounds_t_mix_cp <- function(y,ens, h, df, epsilon, delta){
   
   tmp  = rep(NA,n)
   for ( i in 1:n){
-    print(i)
     mean <- sort(unique(ens[i,]))
     colnames(mean) <- NULL
     mean <- unlist(mean)
@@ -277,7 +276,6 @@ bounds_norm_mix_mc <- function(y,mean, sig, epsilon, delta){
     integrand2 = function(x) {return((1-extraDistr::pmixnorm(x,mean=mu,sd=sd, alpha = rep(1, length(mu))/ length(mu)))^2)}
     tmp[i]= integrate(integrand1,lower=-Inf,upper=a)$value + integrate(integrand2,lower=b,upper=Inf)$value
   }
-  print(mean(tmp))
   if (mean(tmp) <= epsilon){
     return(c(a, b))
   } else {
