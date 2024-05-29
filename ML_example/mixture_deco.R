@@ -305,13 +305,11 @@ for (data_directory in data_dirs){
     
     crps_val <- crps_ecdf(y_test, pmix_ecdf_test, grid_vals)
     
-    smooth_cali <- idr2(y_test, X = pmix_ecdf_test, grid = grid_vals, eps = 'sd', type = 'ecdf')
+    smooth_cali <- idrsd(y_test, X = pmix_ecdf_test, grid = grid_vals, eps = 'sd', type = 'ecdf')
     
     cali_crps <- mean(crps.idr(predict(smooth_cali), y = y_test))
     
     uncertainty <- crps_unc(y_test)
-    
-    print( mean(crps_val) - cali_crps)
     
     MSC[i] <- mean(crps_val) - cali_crps
     DSC[i] <- uncertainty - cali_crps
