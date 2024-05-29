@@ -109,7 +109,7 @@ for (data_directory in data_dirs){
     col_string <- colnames(y_test)
     y_test <- y_test[, col_string]
     
-    cali_idr <-  idr2(y_test, ens, type = 'ensemble')
+    cali_idr <-  idrsd(y_test, ens, type = 'ensemble')
     cali_preds <- predict(cali_idr)
     
     cali_crps <- mean(crps(cali_preds, y_test))
