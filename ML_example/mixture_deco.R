@@ -51,7 +51,7 @@ for (data_directory in data_dirs){
     
     delta <- (max(y_test) - min(y_test)) / 100
     
-    crps_original <- crps(idr_preds, y_test)
+    crps_original <- mean(crps(idr_preds, y_test))
     
     if (df == "None"){
       crps_val = rep(0, length(y_test))
